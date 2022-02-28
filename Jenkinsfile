@@ -1,10 +1,17 @@
 pipeline {
     agent any
+    tools { 
+	// Global tools to be used by the pipeline
+     //   maven 'maven3.8.4' 
+        jdk 'jdk9' 
+    }
+    
     environment {
-        //be sure to replace "willbla" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "willbla/train-schedule"
+        //be sure to replace "*******" with your own Docker Hub username
+        DOCKER_IMAGE_NAME = "kkarapull/train-schedule"
         CANARY_REPLICAS = 0
     }
+    
     stages {
         stage('Build') {
             steps {
@@ -15,7 +22,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                branch 'master'
+                branch 'example-solution'
             }
             steps {
                 script {
@@ -28,7 +35,7 @@ pipeline {
         }
         stage('Push Docker Image') {
             when {
-                branch 'master'
+                branch 'example-solution'
             }
             steps {
                 script {
@@ -41,7 +48,7 @@ pipeline {
         }
         stage('CanaryDeploy') {
             when {
-                branch 'master'
+                branch 'example-solution'
             }
             environment { 
                 CANARY_REPLICAS = 1
@@ -56,7 +63,7 @@ pipeline {
         }
         stage('SmokeTest') {
             when {
-                branch 'master'
+                branch 'example-solution'
             }
             steps {
                 script {
@@ -73,7 +80,7 @@ pipeline {
         }
         stage('DeployToProduction') {
             when {
-                branch 'master'
+                branch 'example-solution'
             }
             steps {
                 milestone(1)

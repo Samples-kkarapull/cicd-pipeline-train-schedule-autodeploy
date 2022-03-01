@@ -47,7 +47,7 @@ pipeline {
             }
         }
         
-	 stage('Apply Kubernetes files') {
+	 /*stage('Apply Kubernetes files') {
 	    when {
                 branch 'example-solution'
 	    }
@@ -59,9 +59,9 @@ pipeline {
               sh 'kubectl apply -f train-schedule-kube-canary.yml'
                     }
            }
-	 }    
+	 }  */  
 	    
-	 /*stage('CanaryDeploy') {
+	 stage('CanaryDeploy') {
             when {
                 branch 'example-solution'
             }
@@ -75,7 +75,7 @@ pipeline {
                     enableConfigSubstitution: true
                 )
             }
-        } */
+        } 
 	    
         stage('SmokeTest') {
             when {

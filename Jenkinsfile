@@ -46,7 +46,22 @@ pipeline {
                 }
             }
         }
-        stage('CanaryDeploy') {
+        
+	 stage('Apply Kubernetes files') {
+	    when {
+                branch 'example-solution'
+	    }
+	    environment { 
+                CANARY_REPLICAS = 1
+            }
+            steps {
+              withKubeConfig([credentialsId: 'kubeconfig', serverUrl: '3.8.89.132']) {
+              sh 'kubectl apply -f train-schedule-kube-canary.yml'
+                    }
+           }
+	 }    
+	    
+	 /*stage('CanaryDeploy') {
             when {
                 branch 'example-solution'
             }
@@ -60,7 +75,8 @@ pipeline {
                     enableConfigSubstitution: true
                 )
             }
-        }
+        } */
+	    
         stage('SmokeTest') {
             when {
                 branch 'example-solution'
@@ -82,7 +98,9 @@ pipeline {
             when {
                 branch 'example-solution'
             }
-            steps {
+            
+		
+	    steps {
                 milestone(1)
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',

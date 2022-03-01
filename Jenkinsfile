@@ -55,7 +55,7 @@ pipeline {
                 CANARY_REPLICAS = 1
             }
             steps {
-              withKubeConfig([credentialsId: 'kubeconfig', serverUrl: '3.8.89.132']) {
+              withKubeConfig([credentialsId: 'kubeconfig', serverUrl: '4cd6220bd51c.mylabserver.com']) {
               sh 'kubectl apply -f train-schedule-kube-canary.yml'
                     }
            }
